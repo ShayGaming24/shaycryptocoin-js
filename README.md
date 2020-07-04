@@ -20,13 +20,13 @@ async function getDetails() {
     const ownerAddress = `TWL1CUj7jjmJcRRwiRvGT6q1rZMGS7KQNd`;
 
     // sccn_js.totalSupply() returns the total supply of SCCN
-    let totalSupply = await sccn_js.totalSupply().call();
+    let totalSupply = await sccn_js.totalSupply();
 
     // sccn_js.balanceOf(ownerAddress) returns the SCCN balance of ownerAddress
-    let balanceOfUser = await sccn_js.balanceOf(ownerAddress).call();
+    let balanceOfUser = await sccn_js.balanceOf(ownerAddress);
     
     // sccn_js.allowance(allower, spender) returns the allowance that allower has given to spender
-    let allowance = await sccn_js.allowance(ownerAddress, otherAddress).call();
+    let allowance = await sccn_js.allowance(ownerAddress, otherAddress);
 
 }
 
