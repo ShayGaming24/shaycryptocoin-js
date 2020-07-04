@@ -33,6 +33,30 @@ async function getDetails() {
 getDetails()
 ```
 
+#### Price-related functions
+
+If there have been no Poloni DEX trades in the last 24 hours for SCCN, the following functions will return false.
+
+The values returned will have 8 decimal places by default, but that can be changed with the JS built-in `Math` functions.
+
+```js
+async function getPrices() {
+
+    let trxPrice = await sccn_js.getPriceTRX();
+    await console.log(`TRX price: ${trxPrice}`);
+    // expected output: float or boolean (false)
+
+    let btcPrice = await sccn_js.getPriceBTC();
+    await console.log(`BTC price: ${btcPrice}`);
+    // expected output: float or boolean (false)
+
+    let usdPrice = await sccn_js.getPriceUSD();
+    await console.log(`USD price: ${usdPrice}`);
+    // expected output: float or boolean (false)
+    
+}
+```
+
 ### Contribute
 
 Do you want to help contribute to this project? Just fork the project, make a new branch and send in a pull request!
