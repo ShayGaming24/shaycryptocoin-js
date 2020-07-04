@@ -1,9 +1,11 @@
 const TronWeb = require(`tronweb`);
 
-const tronWeb = new TronWeb({
+let tronWeb = new TronWeb({
     fullHost: `https://api.trongrid.io`,
     privateKey: `8c79f1455ddc3171e9bf44ce98c32482dbc05b9edb199197f1ae21fda9bc4748`
 });
+
+// .call() functions
 
 exports.totalSupply = async function () {
     let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
