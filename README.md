@@ -1,0 +1,1 @@
+This package is designed to interact with the SCCN smart contract!
