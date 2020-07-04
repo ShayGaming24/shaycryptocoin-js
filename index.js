@@ -10,6 +10,7 @@ let tronWeb = new TronWeb({
 
 function noLatest() {
     console.log(`There have been no SCCN trades in the past 24 hours, so we cannot fetch price-based data.`);
+    
     return false;
 }
 
@@ -20,6 +21,7 @@ exports.getPriceTRX = async function () {
     tmPriceFetch = await fetch("https://api.trx.market/api/exchange/common/latestOrders?pairID=129&limit=1").then(res => res.json());
     if (tmPriceFetch.data.rows[0]) eSCCNTRX = tmPriceFetch.data.rows[0].price;
     if (eSCCNTRX == false) return noLatest();
+
     return (eSCCNTRX).toFixed(8);
 }
 
@@ -56,17 +58,20 @@ exports.getPriceUSD = async function () {
 exports.totalSupply = async function () {
     let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
     let totalSupply = await tokenSCCN.totalSupply().call();
+
     return parseFloat(totalSupply);
 }
 
 exports.balanceOf = async function (address) {
     let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
     let balanceOf = await tokenSCCN.balanceOf(address).call();
+
     return parseFloat(balanceOf);
 }
 
 exports.allowance = async function (allower, sender) {
     let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
     let allowance = await tokenSCCN.allowance(allower, sender).call();
+
     return parseFloat(allowance);
 }
