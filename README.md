@@ -6,6 +6,10 @@ This package is designed to interact with the SCCN smart contract!
 
 ### Documentation
 
+First you need to install the module:
+
+`npm i @shaycryptocoin/shaycryptocoin-js`
+
 All the functions below return integers. For example, if the balance of a user is 10 SCCN, the balanceOf(user) function will return 1000 because the token has 2 decimals.
 
 ```js
