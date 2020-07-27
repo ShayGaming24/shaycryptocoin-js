@@ -57,6 +57,30 @@ async function getPrices() {
 }
 ```
 
+#### Event listeners
+
+This module can also listen for contract events on the SCCN smart contract!
+
+```js
+// listen for SCCN transfer events
+sccn_js.events.on(`transfer`, async function(err, res) {
+    if (err) console.log(err);
+    console.log(res);
+});
+
+// listen for SCCN approval events
+sccn_js.events.on(`approval`, async function(err, res) {
+    if (err) console.log(err);
+    console.log(res);
+});
+
+// listen for SCCN burn events
+sccn_js.events.on(`burn`, async function(err, res) {
+    if (err) console.log(err);
+    console.log(res);
+});
+```
+
 ### Contribute
 
 Do you want to help contribute to this project? Just fork the project, make a new branch and send in a pull request!

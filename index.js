@@ -12,6 +12,29 @@ function noLatest() {
     return false;
 }
 
+const emitter = new EventEmitter();
+
+async function eventListeners() {
+    
+    let contractAddress = "TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti";
+    let tokenSCCN = await tronWeb.contract().at(contractAddress);
+    
+    tokenSCCN.Transfer().watch((err, res) => {
+        emitter.emit(`transfer`, (err, res));
+    });
+
+    tokenSCCN.Approval().watch((err, res) => {
+        emitter.emit(`approval`, (err, res));
+    });
+
+    tokenSCCN.Burn().watch((err, res) => {
+        emitter.emit(`burn`, (err, res));
+    });
+    
+};
+
+eventListeners();
+
 let toExport = {
     getPriceTRX: async function () {
         let eSCCNTRX = false;
@@ -48,56 +71,26 @@ let toExport = {
         eTRXUSD = cgPriceFetch.tron.usd;
 
         return (eSCCNTRX * eTRXUSD).toFixed(8);
-    }
+    },
+    totalSupply: async function () {
+        let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
+        let totalSupply = await tokenSCCN.totalSupply().call();
+
+        return parseFloat(totalSupply);
+    },
+    balanceOf: async function (address) {
+        let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
+        let balanceOf = await tokenSCCN.balanceOf(address).call();
+
+        return parseFloat(balanceOf);
+    },
+    allowance: async function (allower, sender) {
+        let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
+        let allowance = await tokenSCCN.allowance(allower, sender).call();
+
+        return parseFloat(allowance);
+    },
+    events: emitter
 };
 
 module.exports = toExport;
-
-// events
-
-const emitter = new EventEmitter();
-
-async function eventListeners() {
-
-    let contractAddress = "TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti";
-    let tokenSCCN = await tronWeb.contract().at(contractAddress);
-
-    tokenSCCN.Transfer().watch((err, res) => {
-        emitter.emit(`transfer`, res);
-    });
-
-};
-
-// internal functions
-
-
-// external functions
-
-
-
-
-
-
-
-// .call() functions
-
-totalSupply = async function () {
-    let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
-    let totalSupply = await tokenSCCN.totalSupply().call();
-
-    return parseFloat(totalSupply);
-}
-
-balanceOf = async function (address) {
-    let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
-    let balanceOf = await tokenSCCN.balanceOf(address).call();
-
-    return parseFloat(balanceOf);
-}
-
-allowance = async function (allower, sender) {
-    let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
-    let allowance = await tokenSCCN.allowance(allower, sender).call();
-
-    return parseFloat(allowance);
-}
