@@ -3,6 +3,7 @@
   "version": "1.3.0",
   "description": "This package is designed to interact with the SCCN smart contract!",
   "main": "index.js",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

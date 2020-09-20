@@ -7,11 +7,6 @@ let tronWeb = new TronWeb({
     privateKey: `8c79f1455ddc3171e9bf44ce98c32482dbc05b9edb199197f1ae21fda9bc4748`
 });
 
-function noLatest() {
-    console.log(`There have been no SCCN trades in the past 24 hours, so we cannot fetch price-based data.`);
-    return false;
-}
-
 const emitter = new EventEmitter();
 
 async function eventListeners() {
@@ -37,40 +32,34 @@ eventListeners();
 
 let toExport = {
     getPriceTRX: async function () {
-        let eSCCNTRX = false;
-        tmPriceFetch = await fetch("https://api.trx.market/api/exchange/common/latestOrders?pairID=129&limit=1").then(res => res.json());
-        if (tmPriceFetch.data.rows[0]) eSCCNTRX = tmPriceFetch.data.rows[0].price;
-        console.log(eSCCNTRX);
+        let tokenSCCN = await tronWeb.contract().at(`TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti`);
 
-        if (eSCCNTRX == false) return noLatest();
+        let justTRX = (await tronWeb.trx.getBalance(`TR6nwJUfMCYa5koqoDN5BM6EtVMn7WkFPp`)) / 1e6;
+        let justSCCN;
+
+        await tokenSCCN.balanceOf(`TR6nwJUfMCYa5koqoDN5BM6EtVMn7WkFPp`).call().then(balance => {
+            justSCCN = balance / 1e2;
+        });
+
+        let eSCCNTRX = justTRX / justSCCN;
 
         return (eSCCNTRX).toFixed(8);
     },
     getPriceBTC: async function () {
-        let eSCCNTRX = false;
-        tmPriceFetch = await fetch("https://api.trx.market/api/exchange/common/latestOrders?pairID=129&limit=1").then(res => res.json());
-        if (tmPriceFetch.data.rows[0]) eSCCNTRX = tmPriceFetch.data.rows[0].price;
-
-        if (eSCCNTRX == false) return noLatest();
-
-        let eTRXBTC = false;
+        let eSCCNTRX = await this.getPriceTRX();
+        
         cgPriceFetch = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=btc").then(res => res.json());
-        eTRXBTC = cgPriceFetch.tron.btc;
+        let eTRXBTC = cgPriceFetch.tron.btc;
 
         return (eSCCNTRX * eTRXBTC).toFixed(8);
     },
     getPriceUSD: async function () {
-        let eSCCNTRX = false;
-        tmPriceFetch = await fetch("https://api.trx.market/api/exchange/common/latestOrders?pairID=129&limit=1").then(res => res.json());
-        if (tmPriceFetch.data.rows[0]) eSCCNTRX = tmPriceFetch.data.rows[0].price;
+        let eSCCNTRX = await this.getPriceTRX();
 
-        if (eSCCNTRX == false) return noLatest();
-
-        let eTRXUSD = false;
         cgPriceFetch = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd").then(res => res.json());
-        eTRXUSD = cgPriceFetch.tron.usd;
+        let eTRXBTC = cgPriceFetch.tron.btc;
 
-        return (eSCCNTRX * eTRXUSD).toFixed(8);
+        return (eSCCNTRX * eTRXBTC).toFixed(8);
     },
     totalSupply: async function () {
         let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
