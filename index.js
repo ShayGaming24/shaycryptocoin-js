@@ -57,9 +57,9 @@ let toExport = {
         let eSCCNTRX = await this.getPriceTRX();
 
         cgPriceFetch = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd").then(res => res.json());
-        let eTRXBTC = cgPriceFetch.tron.btc;
+        let eTRXUSD = cgPriceFetch.tron.usd;
 
-        return (eSCCNTRX * eTRXBTC);
+        return (eSCCNTRX * eTRXUSD);
     },
     totalSupply: async function () {
         let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
