@@ -35,9 +35,7 @@ getDetails()
 
 #### Price-related functions
 
-If there have been no Poloni DEX trades in the last 24 hours for SCCN, the following functions will return false.
-
-The values returned will have 8 decimal places by default, but that can be changed with the JS built-in `Math` functions.
+The functions below can help resolve a price for SCCN!
 
 ```js
 async function getPrices() {
