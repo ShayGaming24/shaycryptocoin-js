@@ -9,9 +9,10 @@ let tronWeb = new TronWeb({
 
 const emitter = new EventEmitter();
 
+let contractAddress = "TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti";
+
 async function eventListeners() {
     
-    let contractAddress = "TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti";
     let tokenSCCN = await tronWeb.contract().at(contractAddress);
     
     tokenSCCN.Transfer().watch((err, res) => {
@@ -32,7 +33,7 @@ eventListeners();
 
 let toExport = {
     getPriceTRX: async function () {
-        let tokenSCCN = await tronWeb.contract().at(`TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti`);
+        let tokenSCCN = await tronWeb.contract().at(contractAddress);
 
         let justTRX = (await tronWeb.trx.getBalance(`TR6nwJUfMCYa5koqoDN5BM6EtVMn7WkFPp`)) / 1e6;
         let justSCCN;
@@ -51,7 +52,9 @@ let toExport = {
         cgPriceFetch = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=btc").then(res => res.json());
         let eTRXBTC = cgPriceFetch.tron.btc;
 
-        return eSCCNTRX * eTRXBTC;
+        let eSCCNBTC = eSCCNTRX * eTRXBTC;
+
+        return eSCCNBTC;
     },
     getPriceUSD: async function () {
         let eSCCNTRX = await this.getPriceTRX();
@@ -59,22 +62,27 @@ let toExport = {
         cgPriceFetch = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd").then(res => res.json());
         let eTRXUSD = cgPriceFetch.tron.usd;
 
-        return eSCCNTRX * eTRXUSD;
+        let eSCCNUSD = eSCCNTRX * eTRXUSD;
+
+        return eSCCNUSD;
     },
     totalSupply: async function () {
-        let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
+        let tokenSCCN = await tronWeb.contract().at(contractAddress);
+
         let totalSupply = await tokenSCCN.totalSupply().call();
 
         return parseFloat(totalSupply);
     },
     balanceOf: async function (address) {
-        let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
+        let tokenSCCN = await tronWeb.contract().at(contractAddress);
+
         let balanceOf = await tokenSCCN.balanceOf(address).call();
 
         return parseFloat(balanceOf);
     },
     allowance: async function (allower, sender) {
-        let tokenSCCN = await tronWeb.contract().at('TTP81ruqBGfSmh2raNV4uf4btgUxkKnfti');
+        let tokenSCCN = await tronWeb.contract().at(contractAddress);
+
         let allowance = await tokenSCCN.allowance(allower, sender).call();
 
         return parseFloat(allowance);
