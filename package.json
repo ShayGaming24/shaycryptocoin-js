@@ -1,6 +1,6 @@
 {
   "name": "@shaycryptocoin/shaycryptocoin-js",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "This package is designed to interact with the SCCN smart contract!",
   "main": "index.js",
   "scripts": {
