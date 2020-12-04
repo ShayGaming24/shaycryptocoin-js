@@ -46,21 +46,16 @@ let toExport = {
 
         return eSCCNTRX;
     },
-    getPriceBTC: async function () {
-        let eSCCNTRX = await this.getPriceTRX();
+    getPrice: async function (ticker) {
+        ticker = ticker.toLowerCase();
         
-        cgPriceFetch = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=btc").then(res => res.json());
-        let eTRXBTC = cgPriceFetch.tron.btc;
-
-        let eSCCNBTC = eSCCNTRX * eTRXBTC;
-
-        return eSCCNBTC;
-    },
-    getPriceUSD: async function () {
         let eSCCNTRX = await this.getPriceTRX();
+        if (ticker == `trx`) return eSCCNTRX;
 
-        cgPriceFetch = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd").then(res => res.json());
-        let eTRXUSD = cgPriceFetch.tron.usd;
+        cgPriceFetch = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=${ticker}`).then(res => res.json());
+        let eTRXUSD = cgPriceFetch.tron[ticker];
+
+        if (!eTRXUSD) return 0;
 
         let eSCCNUSD = eSCCNTRX * eTRXUSD;
 
