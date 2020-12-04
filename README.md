@@ -35,25 +35,17 @@ getDetails()
 
 #### Price-related functions
 
-The functions below can help resolve a price for SCCN!
+The function below can help resolve a price for SCCN!
 
 ```js
-async function getPrices() {
-
-    let trxPrice = await sccn_js.getPriceTRX();
-    await console.log(`TRX price: ${trxPrice}`);
-    // expected output: float or boolean (false)
-
-    let btcPrice = await sccn_js.getPriceBTC();
-    await console.log(`BTC price: ${btcPrice}`);
-    // expected output: float or boolean (false)
-
-    let usdPrice = await sccn_js.getPriceUSD();
-    await console.log(`USD price: ${usdPrice}`);
-    // expected output: float or boolean (false)
-    
+async () => {
+    console.log(`TRX price: ${await sccn_js.getPrice(`TRX`)}`);
+    console.log(`USD price: ${await sccn_js.getPrice(`USD`)}`);
+    console.log(`EUR price: ${await sccn_js.getPrice(`EUR`)}`);
 }
 ```
+
+If a currency is not supported, the function will return 0.
 
 #### Event listeners
 
